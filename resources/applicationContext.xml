@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                    http://www.springframework.org/schema/tx 
+                    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                    http://www.springframework.org/schema/aop 
+                    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                    http://www.springframework.org/schema/context      
+                    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                    http://www.springframework.org/schema/data/jpa
+                    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                    http://www.springframework.org/schema/data/mongo
+                    http://www.springframework.org/schema/data/mongo/spring-mongo-1.7.xsd
+                    http://www.springframework.org/schema/data/repository
+                    http://www.springframework.org/schema/data/repository/spring-repository-1.7.xsd
+                    http://www.springframework.org/schema/task
+                    http://www.springframework.org/schema/task/spring-task-4.0.xsd" default-lazy-init="true">
+
+
+	<!-- 定义受环境影响易变的变量 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:db.properties</value>
+			</list>
+		</property>
+	</bean>
+
+    <!-- 不扫描带有@Controller注解的类。因为这些类已经随容器启动时，在spring-servlet中扫描过一遍了 -->
+    <context:annotation-config/>
+    <context:component-scan base-package="cn.lee.j.eric"/>
+
+    <!-- mongo服务 -->
+    <bean id="serverAddress" class="com.mongodb.ServerAddress">
+        <constructor-arg name="host" value="${mongo.host}"/>
+        <constructor-arg name="port" value="${mongo.port}"/>
+    </bean>
+
+    <!-- mongo授权 -->
+    <bean id="mongoCredential" class="com.mongodb.MongoCredential">
+        <constructor-arg name="mechanism" value="MONGODB_CR" />
+        <constructor-arg name="userName" value="${mongo.username}" />
+        <constructor-arg name="source" value="${mongo.db}" />
+        <constructor-arg name="password" value="${mongo.password}"/>
+    </bean>
+
+    <!-- mongo对象 -->
+    <bean id="mongoClient" class="com.mongodb.MongoClient">
+        <constructor-arg name="addr" ref="serverAddress"/>
+        <constructor-arg name="credentialsList">
+            <list>
+                <ref bean="mongoCredential"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- mongo工厂 -->
+    <bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
+        <constructor-arg name="mongoClient" ref="mongoClient" />
+        <constructor-arg name="databaseName" value="${mongo.db}"/>
+    </bean>
+
+    <bean id="dbRefResolver" class="org.springframework.data.mongodb.core.convert.DefaultDbRefResolver">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+
+    <bean id="mappingContext" class="org.springframework.data.mongodb.core.mapping.MongoMappingContext">
+    </bean>
+
+    <!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
+    <!--<mongo:mapping-converter id="mappingConverter" db-factory-ref="mongoDbFactory"/>-->
+    <bean id="mappingConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg name="dbRefResolver" ref="dbRefResolver"/>
+        <constructor-arg name="mappingContext" ref="mappingContext"/>
+    </bean>
+
+    <!-- 操作mongodb -->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+        <constructor-arg name="mongoConverter" ref="mappingConverter" />
+    </bean>
+
+    <!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
+    <mongo:repositories base-package="cn.lee.j.eric.repository"
+                        repository-impl-postfix="Repository"
+                        mongo-template-ref="mongoTemplate"/>
+
+</beans>

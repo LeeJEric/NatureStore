@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_naturestore" default="compile.module.naturestore">
+  <dirname property="module.naturestore.basedir" file="${ant.file.module_naturestore}"/>
+  
+  <property name="module.jdk.home.naturestore" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.naturestore" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.naturestore" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.naturestore" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="naturestore.output.dir" value="${module.naturestore.basedir}/out/production/NatureStore"/>
+  <property name="naturestore.testoutput.dir" value="${module.naturestore.basedir}/out/test/NatureStore"/>
+  
+  <path id="naturestore.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="naturestore.module.production.classpath">
+    <path refid="${module.jdk.classpath.naturestore}"/>
+    <path refid="library.tomcat_8.0.21.classpath"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="naturestore.runtime.production.module.classpath">
+    <pathelement location="${naturestore.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="naturestore.module.classpath">
+    <path refid="${module.jdk.classpath.naturestore}"/>
+    <pathelement location="${naturestore.output.dir}"/>
+    <path refid="library.tomcat_8.0.21.classpath"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="naturestore.runtime.module.classpath">
+    <pathelement location="${naturestore.testoutput.dir}"/>
+    <pathelement location="${naturestore.output.dir}"/>
+    <path refid="library.tomcat_8.0.21.classpath"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.naturestore">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.naturestore">
+    <patternset refid="excluded.from.module.naturestore"/>
+  </patternset>
+  
+  <path id="naturestore.module.sourcepath">
+    <dirset dir="${module.naturestore.basedir}">
+      <include name="src"/>
+      <include name="resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.naturestore" depends="compile.module.naturestore.production,compile.module.naturestore.tests" description="Compile module NatureStore"/>
+  
+  <target name="compile.module.naturestore.production" depends="register.custom.compilers" description="Compile module NatureStore; production classes">
+    <mkdir dir="${naturestore.output.dir}"/>
+    <javac2 destdir="${naturestore.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.naturestore}/javac">
+      <compilerarg line="${compiler.args.naturestore}"/>
+      <bootclasspath refid="naturestore.module.bootclasspath"/>
+      <classpath refid="naturestore.module.production.classpath"/>
+      <src refid="naturestore.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.naturestore"/>
+    </javac2>
+    
+    <copy todir="${naturestore.output.dir}">
+      <fileset dir="${module.naturestore.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.naturestore.basedir}/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.naturestore.tests" depends="register.custom.compilers,compile.module.naturestore.production" description="compile module NatureStore; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.naturestore" description="cleanup module">
+    <delete dir="${naturestore.output.dir}"/>
+    <delete dir="${naturestore.testoutput.dir}"/>
+  </target>
+</project>

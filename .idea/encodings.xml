@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/src/cn/lee/j/eric/controller/PersonController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/cn/lee/j/eric/entity/Person.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/cn/lee/j/eric/repository/PersonRepository.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/cn/lee/j/eric/service/impl/PersonService.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/mongo-java-driver-3.0.1-javadoc.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/mongo-java-driver-3.0.1-sources.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/mongo-java-driver-3.0.1.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-commons-1.10.0.RELEASE.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-jpa-1.8.0.RELEASE-javadoc.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-jpa-1.8.0.RELEASE-sources.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-jpa-1.8.0.RELEASE.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-1.7.0.RELEASE-javadoc.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-1.7.0.RELEASE-sources.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-1.7.0.RELEASE.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-cross-store-1.7.0.RELEASE-javadoc.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-cross-store-1.7.0.RELEASE-sources.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-cross-store-1.7.0.RELEASE.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-log4j-1.7.0.RELEASE-javadoc.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-log4j-1.7.0.RELEASE-sources.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/WEB-INF/lib/spring-data-mongodb-log4j-1.7.0.RELEASE.jar" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
