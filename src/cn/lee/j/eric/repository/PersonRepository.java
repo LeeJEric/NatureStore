@@ -2,6 +2,7 @@ package cn.lee.j.eric.repository;
 
 import cn.lee.j.eric.entity.Person;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
