@@ -42,18 +42,18 @@
     <context:annotation-config/>
     <context:component-scan base-package="cn.lee.j.eric"/>
 
-    <!-- mongo服务 -->
-    <bean id="serverAddress" class="com.mongodb.ServerAddress">
-        <constructor-arg name="host" value="${mongo.host}"/>
-        <constructor-arg name="port" value="${mongo.port}"/>
-    </bean>
-
-    <!-- mongo授权 -->
+    <!--mongo授权 -->
     <bean id="mongoCredential" class="com.mongodb.MongoCredential">
         <constructor-arg name="mechanism" value="MONGODB_CR" />
         <constructor-arg name="userName" value="${mongo.username}" />
         <constructor-arg name="source" value="${mongo.db}" />
         <constructor-arg name="password" value="${mongo.password}"/>
+    </bean>
+
+    <!-- mongo服务 -->
+    <bean id="serverAddress" class="com.mongodb.ServerAddress">
+        <constructor-arg name="host" value="${mongo.host}"/>
+        <constructor-arg name="port" value="${mongo.port}"/>
     </bean>
 
     <!-- mongo对象 -->
@@ -66,31 +66,11 @@
         </constructor-arg>
     </bean>
 
-    <!-- mongo工厂 -->
-    <bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
-        <constructor-arg name="mongoClient" ref="mongoClient" />
-        <constructor-arg name="databaseName" value="${mongo.db}"/>
-    </bean>
+    <mongo:db-factory mongo-ref="mongoClient" dbname="${mongo.db}"/>
 
-    <bean id="dbRefResolver" class="org.springframework.data.mongodb.core.convert.DefaultDbRefResolver">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-    </bean>
+    <mongo:mapping-converter db-factory-ref="mongoDbFactory" base-package="cn.lee.j.eric.entity"/>
 
-    <bean id="mappingContext" class="org.springframework.data.mongodb.core.mapping.MongoMappingContext">
-    </bean>
-
-    <!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
-    <!--<mongo:mapping-converter id="mappingConverter" db-factory-ref="mongoDbFactory"/>-->
-    <bean id="mappingConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
-        <constructor-arg name="dbRefResolver" ref="dbRefResolver"/>
-        <constructor-arg name="mappingContext" ref="mappingContext"/>
-    </bean>
-
-    <!-- 操作mongodb -->
-    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-        <constructor-arg name="mongoConverter" ref="mappingConverter" />
-    </bean>
+    <mongo:template db-factory-ref="mongoDbFactory" converter-ref="mappingConverter"/>
 
     <!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
     <mongo:repositories base-package="cn.lee.j.eric.repository"
